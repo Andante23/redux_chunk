@@ -13,8 +13,8 @@ const LetterList = () => {
    */
   const [buttonValue, setButtonValue] = useState("최정훈");
   const navigate = useNavigate();
-  const allZnbData = useSelector((state) => state.zaNaBiLetter);
-
+  const { znabi } = useSelector((state) => state);
+  // console.log(znabi);
   const handleArtistPostViewClick = (selectValue) =>
     setButtonValue(selectValue);
 
@@ -34,9 +34,9 @@ const LetterList = () => {
           2. map을 통해서 반복문 돌리기!!!!!
      */}
 
-      {allZnbData.filter((ld) => ld.writedTo === buttonValue).length !== 0 ? (
+      {znabi.filter((ld) => ld.writedTo === buttonValue).length !== 0 ? (
         <div>
-          {letterData
+          {znabi
             .filter((ld) => ld.writedTo === buttonValue)
             .map((ld) => {
               return (
@@ -50,14 +50,13 @@ const LetterList = () => {
                     <p>
                       <p>{ld.nickname}</p>
                       <p>{ld.content.slice(0, 50) + "..."}</p>
-                      <StToThePage>
-                        <a
-                          onClick={() => {
-                            navigate(`/detail/${ld.id}`);
-                          }}
-                        >
-                          더 보기
-                        </a>
+
+                      <StToThePage
+                        onClick={() => {
+                          navigate(`/detail/${ld.id}`);
+                        }}
+                      >
+                        더 보기
                       </StToThePage>
                     </p>
                   </StFilTerCardItem>

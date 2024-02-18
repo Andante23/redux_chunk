@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { GlobalStyle } from "style/GlobalStyle";
+import { GlobalStyle } from "Style/GlobalStyle";
 import styled from "styled-components";
 
 const DetailPage = () => {
@@ -17,7 +17,8 @@ const DetailPage = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState();
-  const letterData = useSelector((state) => state.zaNaBiLetter);
+  const { znabi } = useSelector((state) => state);
+  console.log(znabi);
   const dispatch = useDispatch();
 
   /*
@@ -63,7 +64,7 @@ const DetailPage = () => {
   return (
     <>
       <GlobalStyle />
-      {letterData
+      {znabi
         .filter((lD) => lD.id === id)
         .map((LD) => {
           return (

@@ -1,7 +1,7 @@
 import { LetterHeader } from "components/LetterHeader";
 
 import { LetterInputForm } from "components/LetterInputForm";
-import { GlobalStyle } from "style/GlobalStyle";
+import { GlobalStyle } from "Style/GlobalStyle";
 
 /* Home : 메인 페이지 컴포넌트 */
 const HomePage = () => {
