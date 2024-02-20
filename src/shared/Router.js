@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "../pages/HomePage.jsx";
 import DetailPage from "../pages/DetailPage.jsx";
 import Login from "pages/Login";
-import Join from "pages/Join";
+
 import Profile from "pages/Profile";
 import { useSelector } from "react-redux";
 
@@ -28,8 +28,6 @@ const Router = () => {
           <>
             {/* 로그인 , 회원가입을 보여주세요  */}
             <Route path="/login" element={<Login />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="*" element={<Navigate replace to="/login" />} />
           </>
         )}
       </Routes>

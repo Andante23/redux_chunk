@@ -1,10 +1,69 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  //  토글링에 사용되는  state변수
   const [isLogin, setIsLogin] = useState(true);
 
-  const toggleForm = () => {
+  // 회원가입 / 로그인 입력값을 인식할수 있는  state변수
+  const [idea, setIdea] = useState("");
+  const [pw, setPw] = useState("");
+  const [nickName, setNickName] = useState("");
+
+  // 로그인이 성공하면 Home 페이지로 이동하게끔 하기
+  const navigate = useNavigate();
+
+  // 버튼에 따라 로그인 / 회원가입 창으로 토글링되게하는 함수
+  const toggleFormButtonClick = () => {
     setIsLogin(!isLogin);
+  };
+
+  // 주어진 jwt 서버를 이용해서 회원가입을 실행하는 함수
+  const joinButtonClick = async (event) => {
+    event.preventDefault();
+
+    try {
+      const joinData = { id: idea, password: pw, nickname: nickName };
+      const res = await axios.post(
+        `https://moneyfulpublicpolicy.co.kr/register`,
+        joinData
+      );
+
+      if (res.data.accessToken) {
+        localStorage.setItem("accessToken", res.data.accessToken);
+      }
+
+      console.log(res);
+
+      setIsLogin(!isLogin);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
+
+  // 주어진 jwt 서버를 이용해서 로그인을 실행하는 함수
+  const loginButtonClick = async (event) => {
+    event.preventDefault();
+
+    try {
+      const loginData = { id: idea, password: pw };
+      const res = await axios.post(
+        `https://moneyfulpublicpolicy.co.kr/login`,
+        loginData
+      );
+
+      if (res.data.accessToken) {
+        localStorage.setItem("accessToken", res.data.accessToken);
+      }
+
+      console.log(res);
+
+      navigate("/");
+      // 로그인 성공 후 필요한 작업을 수행하거나 다른 페이지로 이동할 수 있습니다.
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   };
 
   return (
@@ -12,37 +71,45 @@ function Login() {
       {isLogin ? (
         <div>
           <h1>로그인</h1>
-          <form>
+          <form onSubmit={loginButtonClick}>
             <input
               type="text"
               placeholder="아이디"
               minLength={4}
               maxLength={10}
+              value={idea}
+              onChange={(event) => setIdea(event.target.value)}
             />
             <input
               type="text"
               placeholder="비밀번호"
               minLength={4}
               maxLength={15}
+              value={pw}
+              onChange={(event) => setPw(event.target.value)}
             />
+            <button>로그인</button>
+            <span onClick={toggleFormButtonClick}>회원가입창으로</span>
           </form>
-          <button>로그인</button>
-          <span onClick={toggleForm}>회원가입창으로</span>
         </div>
       ) : (
         <div>
           <h1>회원가입</h1>
-          <form>
+          <form onSubmit={joinButtonClick}>
             <input
               type="text"
               minLength={4}
               maxLength={10}
+              value={idea}
+              onChange={(event) => setIdea(event.target.value)}
               placeholder="아이디"
             />
             <input
               type="text"
               minLength={4}
               maxLength={15}
+              value={pw}
+              onChange={(event) => setPw(event.target.value)}
               placeholder="비밀번호"
             />
             <input
@@ -50,11 +117,13 @@ function Login() {
               minLength={1}
               maxLength={10}
               placeholder="닉네임"
+              value={nickName}
+              onChange={(event) => setNickName(event.target.value)}
             />
 
             <button>회원가입</button>
           </form>
-          <span onClick={toggleForm}>로그인창으로</span>
+          <span onClick={toggleFormButtonClick}>로그인창으로</span>
         </div>
       )}
     </>

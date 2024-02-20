@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addZanNaBiLetter } from "store/modules/znbFanLetter";
+import { addZanNaBiLetter } from "store/modules/znbFanSlice";
 
 import { v4 as uuidv4 } from "uuid";
 import LetterList from "./LetterList";

@@ -1,4 +1,4 @@
-import znbFanLetter from "store/modules/znbFanLetter";
+import znbFanLetter from "store/modules/znbFanSlice";
 
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "store/modules/authSlice";
