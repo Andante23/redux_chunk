@@ -22,7 +22,6 @@ const Router = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
-            <Route path="*" element={<Navigate replace to="/" />} />
           </>
         ) : (
           // 비로그인 상태라면

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../store/modules/authSlice";
+import { useDispatch } from "react-redux";
 
 function Login() {
   //  토글링에 사용되는  state변수
@@ -13,6 +15,7 @@ function Login() {
 
   // 로그인이 성공하면 Home 페이지로 이동하게끔 하기
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // 버튼에 따라 로그인 / 회원가입 창으로 토글링되게하는 함수
   const toggleFormButtonClick = () => {
@@ -60,10 +63,13 @@ function Login() {
 
       if (res.data.accessToken) {
         localStorage.setItem("accessToken", res.data.accessToken);
-        navigate("/");
       }
 
-      // 로그인 성공 후 필요한 작업을 수행하거나 다른 페이지로 이동할 수 있습니다.
+      // dispatch를 이용해서 현재 리덕스 스토어 내의 로그인 값 변경
+      // 그와 동시에 라우터 값 false -> true 변경
+      dispatch(login(true));
+
+      navigate("/");
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -83,6 +89,7 @@ function Login() {
               value={idea}
               onChange={(event) => setIdea(event.target.value)}
             />
+            <br />
             <input
               type="text"
               placeholder="비밀번호"
@@ -91,8 +98,12 @@ function Login() {
               value={pw}
               onChange={(event) => setPw(event.target.value)}
             />
+            <br />
             <button>로그인</button>
-            <span onClick={toggleFormButtonClick}>회원가입창으로</span>
+            <br />
+            <span onClick={toggleFormButtonClick}>
+              <u>회원가입</u>창으로
+            </span>
           </form>
         </div>
       ) : (
@@ -107,6 +118,7 @@ function Login() {
               onChange={(event) => setIdea(event.target.value)}
               placeholder="아이디"
             />
+            <br />
             <input
               type="text"
               minLength={4}
@@ -115,6 +127,7 @@ function Login() {
               onChange={(event) => setPw(event.target.value)}
               placeholder="비밀번호"
             />
+            <br />
             <input
               type="text"
               minLength={1}
@@ -123,10 +136,12 @@ function Login() {
               value={nickName}
               onChange={(event) => setNickName(event.target.value)}
             />
+            <br />
 
             <button>회원가입</button>
+            <br />
           </form>
-          <span onClick={toggleFormButtonClick}>로그인창으로</span>
+          <u onClick={toggleFormButtonClick}>로그인창</u>으로
         </div>
       )}
     </>
