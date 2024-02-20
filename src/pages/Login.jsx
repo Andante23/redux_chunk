@@ -39,6 +39,7 @@ function Login() {
 
       if (res.data.accessToken) {
         localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("accessToken", nickName);
       }
 
       setIsLogin(!isLogin);
@@ -62,7 +63,7 @@ function Login() {
       console.log("res의data의accessToken", res.data.accessToken);
 
       if (res.data.accessToken) {
-        localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("nickname", JSON.stringify(nickName));
       }
 
       // dispatch를 이용해서 현재 리덕스 스토어 내의 로그인 값 변경

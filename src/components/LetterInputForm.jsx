@@ -4,17 +4,22 @@ import { addZanNaBiLetter } from "store/modules/znbFanSlice";
 
 import { v4 as uuidv4 } from "uuid";
 import LetterList from "./LetterList";
-
+import axios from "axios";
 import styled from "styled-components";
 
 /*LetterForm : 편지 입력폼 컴포넌트 */
 export function LetterInputForm() {
+  // axios.get(`https://moneyfulpublicpolicy.co.kr/register/`);
+
   /*
     nickname , content : 입력값 저장 
     selectValue : selectBox의 option  값 저장
     dispatch : 중앙 저장소 store에 데이터 저장할때 쓰려고
   */
-  const [nickname, setNickName] = useState("");
+
+  const userNickName = localStorage.getItem("nickname");
+
+  const [nickname, setNickName] = useState(userNickName);
   const [content, setContent] = useState("");
   const [selectValue, setSelectValue] = useState("최정훈");
   const dispatch = useDispatch();
@@ -88,14 +93,12 @@ export function LetterInputForm() {
     <>
       <StLetterForm>
         <StLetterInputDisplay>
-          <StLetterFormInput
-            type="text"
-            name="nickname"
-            value={nickname}
-            onChange={onChangeNickName}
-            placeholder="닉네임"
-            required
-          />
+          {/* 
+         
+          nickname의  맨앞 과 맨끝의 "을  slice 메서드를 이용해서 제거해줌 
+          
+          */}
+          {nickname.slice(1, -1)}
           <br />
           <StLetterFormTextArea
             type="text"
