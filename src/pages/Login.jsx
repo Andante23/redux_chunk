@@ -25,16 +25,18 @@ function Login() {
 
     try {
       const joinData = { id: idea, password: pw, nickname: nickName };
+
       const res = await axios.post(
         `https://moneyfulpublicpolicy.co.kr/register`,
         joinData
       );
 
+      console.log("join의 res", res);
+      console.log("accessToken", res.data.accessToken);
+
       if (res.data.accessToken) {
         localStorage.setItem("accessToken", res.data.accessToken);
       }
-
-      console.log(res);
 
       setIsLogin(!isLogin);
     } catch (error) {
@@ -53,16 +55,17 @@ function Login() {
         loginData
       );
 
+      console.log("res", res);
+      console.log("res의data의accessToken", res.data.accessToken);
+
       if (res.data.accessToken) {
         localStorage.setItem("accessToken", res.data.accessToken);
+        navigate("/");
       }
 
-      console.log(res);
-
-      navigate("/");
       // 로그인 성공 후 필요한 작업을 수행하거나 다른 페이지로 이동할 수 있습니다.
     } catch (error) {
-      alert(error.response.data.message);
+      console.log(error.response.data.message);
     }
   };
 

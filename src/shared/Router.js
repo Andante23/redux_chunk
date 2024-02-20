@@ -17,17 +17,18 @@ const Router = () => {
       <Routes>
         {/* 로그인이 된 상태라면 */}
         {isAuthenticated === true ? (
+          // 로그인 상태라면
           <>
-            {/* 프로필 , 홈 , 상세를 보여주세요 */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
             <Route path="*" element={<Navigate replace to="/" />} />
           </>
         ) : (
+          // 비로그인 상태라면
           <>
-            {/* 로그인 , 회원가입을 보여주세요  */}
             <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate replace to="/login" />} />
           </>
         )}
       </Routes>
