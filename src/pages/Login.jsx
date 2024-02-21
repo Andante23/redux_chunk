@@ -34,14 +34,6 @@ function Login() {
         joinData
       );
 
-      console.log("join의 res", res);
-      console.log("accessToken", res.data.accessToken);
-
-      if (res.data.accessToken) {
-        localStorage.setItem("accessToken", res.data.accessToken);
-        localStorage.setItem("accessToken", nickName);
-      }
-
       setIsLogin(!isLogin);
     } catch (error) {
       alert(error.response.data.message);
@@ -63,7 +55,9 @@ function Login() {
       console.log("res의data의accessToken", res.data.accessToken);
 
       if (res.data.accessToken) {
-        localStorage.setItem("nickname", JSON.stringify(nickName));
+        localStorage.setItem("nickname", res.data.nickname);
+        localStorage.setItem("userId", res.data.userId);
+        localStorage.setItem("avatar", res.data.avatar);
       }
 
       // dispatch를 이용해서 현재 리덕스 스토어 내의 로그인 값 변경

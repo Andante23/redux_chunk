@@ -98,8 +98,9 @@ const StFilTerCardItemHeroImage = styled.img`
 `;
 
 const StToThePage = styled.p`
-  margin-left: 87.5rem;
   cursor: pointer;
+  color: #fbf7f7;
+  padding-left: 1000px;
 `;
 
 const StPostView = styled.div`

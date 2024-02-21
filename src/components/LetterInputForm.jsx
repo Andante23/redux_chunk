@@ -9,8 +9,6 @@ import styled from "styled-components";
 
 /*LetterForm : 편지 입력폼 컴포넌트 */
 export function LetterInputForm() {
-  // axios.get(`https://moneyfulpublicpolicy.co.kr/register/`);
-
   /*
     nickname , content : 입력값 저장 
     selectValue : selectBox의 option  값 저장
@@ -18,7 +16,6 @@ export function LetterInputForm() {
   */
 
   const userNickName = localStorage.getItem("nickname");
-
   const [nickname, setNickName] = useState(userNickName);
   const [content, setContent] = useState("");
   const [selectValue, setSelectValue] = useState("최정훈");
@@ -31,8 +28,6 @@ export function LetterInputForm() {
    onSubmitInputForm : 입력값을 최종적으로  redux 중앙저장소에 저장하는 함수 
 */
   const onChangeSelect = (event) => setSelectValue(event.target.value);
-
-  const onChangeNickName = (event) => setNickName(event.target.value);
 
   const onChangeContent = (event) => setContent(event.target.value);
 
