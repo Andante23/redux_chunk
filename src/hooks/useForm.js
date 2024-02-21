@@ -1,5 +1,5 @@
 import { addZanNaBiLetter } from "store/modules/znbFanSlice";
-import React, { useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -55,7 +55,6 @@ function useForm() {
     // 만약 nickname ,content가 공백으로 입력받으면
     // trim을 통해 < 스페이스 4번 > 상태도.....입력 x
     if (nickname.trim() === "" && content.trim() === "") {
-      //  경고 후~~~
       alert("입력란을 모두 입력해주세요");
       setNickName("");
       setContent("");

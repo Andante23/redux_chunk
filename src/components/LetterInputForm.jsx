@@ -69,11 +69,6 @@ const StLetterInputDisplay = styled.div`
   margin: auto;
 `;
 
-const StLetterFormInput = styled.input`
-  padding: 5px;
-  width: 900px;
-`;
-
 const StLetterFormTextArea = styled.textarea`
   padding: 5px;
   margin-top: 10px;

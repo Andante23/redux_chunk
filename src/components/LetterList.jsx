@@ -14,7 +14,6 @@ const LetterList = () => {
   const [buttonValue, setButtonValue] = useState("최정훈");
   const navigate = useNavigate();
   const { znabi } = useSelector((state) => state);
-  // console.log(znabi);
   const handleArtistPostViewClick = (selectValue) =>
     setButtonValue(selectValue);
 
