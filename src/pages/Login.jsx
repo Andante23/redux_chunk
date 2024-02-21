@@ -52,10 +52,12 @@ function Login() {
         loginData
       );
 
+      console.log(res);
       if (res.data.accessToken) {
         localStorage.setItem("nickname", res.data.nickname);
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("avatar", res.data.avatar);
+        localStorage.setItem("token", res.data.accessToken);
       }
 
       // dispatch를 이용해서 현재 리덕스 스토어 내의 로그인 값 변경
