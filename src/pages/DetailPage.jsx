@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  deleteZanNaBiLetter,
+  updateZanNaBiLetter,
+} from "store/modules/znbFanSlice";
 import { GlobalStyle } from "Style/GlobalStyle";
+
 import styled from "styled-components";
 
 const DetailPage = () => {
@@ -65,16 +70,15 @@ const DetailPage = () => {
     <>
       <GlobalStyle />
       {znabi
-        .filter((lD) => lD.id === id)
-        .map((LD) => {
+        .filter((letter) => letter.id === id)
+        .map((letter) => {
           return (
             <>
               <div>
                 <GlobalStyle />
-                <b>{LD.nickname}</b>
 
-                <b>{LD.createdAt}</b>
-
+                <b>{letter.createdAt}</b>
+                <p>{letter.nickname}</p>
                 {isEditing ? (
                   <StLetterText
                     value={editedContent}
@@ -82,10 +86,10 @@ const DetailPage = () => {
                       setEditedContent(e.target.value);
                     }}
                   >
-                    {LD.content}
+                    {letter.content}
                   </StLetterText>
                 ) : (
-                  <p>{LD.content}</p>
+                  <p>{letter.content}</p>
                 )}
 
                 <StLetterCardOptionButton>
@@ -100,7 +104,11 @@ const DetailPage = () => {
                     </>
                   ) : (
                     <>
-                      <StLetterCardDelete onClick={handleDelete}>
+                      <StLetterCardDelete
+                        onClick={() => {
+                          handleDelete(letter.id);
+                        }}
+                      >
                         삭제하기
                       </StLetterCardDelete>
                       <StLetterCardUpdate onClick={handleEdit}>

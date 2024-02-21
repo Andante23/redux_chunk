@@ -1,106 +1,34 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addZanNaBiLetter } from "store/modules/znbFanSlice";
-
-import { v4 as uuidv4 } from "uuid";
 import LetterList from "./LetterList";
-import axios from "axios";
+import useForm from "hooks/useForm";
 import styled from "styled-components";
 
 /*LetterForm : 편지 입력폼 컴포넌트 */
 export function LetterInputForm() {
-  /*
-    nickname , content : 입력값 저장 
-    selectValue : selectBox의 option  값 저장
-    dispatch : 중앙 저장소 store에 데이터 저장할때 쓰려고
-  */
-
-  const userNickName = localStorage.getItem("nickname");
-  const [nickname, setNickName] = useState(userNickName);
-  const [content, setContent] = useState("");
-  const [selectValue, setSelectValue] = useState("최정훈");
-  const dispatch = useDispatch();
-
-  /*
-   onChangeSelect : 셀렉트 박스에서 얻은 값을 저장하는 함수
-   onChangeNickName : nickname 인풋에서 얻은 값을 저장하는 함수
-   onChangeContent : content 인풋에서 얻은 값을 저장하는 함수 
-   onSubmitInputForm : 입력값을 최종적으로  redux 중앙저장소에 저장하는 함수 
-*/
-  const onChangeSelect = (event) => setSelectValue(event.target.value);
-
-  const onChangeContent = (event) => setContent(event.target.value);
-
-  const onSubmitInputForm = (event) => {
-    // 기본 동작 방지
-    event.preventDefault();
-
-    // toLocaleDateString에 쓰이는  두번째 매개변수 option
-    const option = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
-    /* 
-     inputDataInfo : store에 저장되는 데이터들
-     createdAt : 현재 서비스 되는 한국 시간대로 지정
-     uuidv4 라이브러리를 이용해서 고유한 값 부여 
-     */
-    const inputDataInfo = {
-      createdAt: new Date().toLocaleDateString("ko-kr", option),
-      nickname,
-      content,
-      avatar:
-        "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/36.jpg",
-      writedTo: selectValue,
-
-      id: uuidv4(),
-    };
-
-    // 만약 nickname ,content가 공백으로 입력받으면
-    // trim을 통해 < 스페이스 4번 > 상태도.....입력 x
-    if (nickname.trim() === "" && content.trim() === "") {
-      //  경고 후~~~
-      alert("입력란을 모두 입력해주세요");
-      setNickName("");
-      setContent("");
-      //   입력 못받게 하기
-      return;
-    }
-
-    // 레터를 추가하겠습니까? 라고 사용자에게 물어보는 내용
-    const isAdd = window.confirm("레터를 추가하겠습니까?");
-    if (isAdd === true) {
-      dispatch(addZanNaBiLetter(inputDataInfo));
-      setNickName("");
-      setContent("");
-    } else {
-      alert("취소하였습니다");
-      setNickName("");
-      setContent("");
-      return;
-    }
-  };
+  //  form 에 의존하는 입력 , 셀렉트박스 코드줄이 길어서  useForm인  커스텀 혹 이용
+  const {
+    userNickName,
+    content,
+    selectValue,
+    onChangeContent,
+    onChangeSelect,
+    onSubmitInputForm,
+  } = useForm();
 
   return (
     <>
       <StLetterForm>
         <StLetterInputDisplay>
-          {/* 
-         
-          nickname의  맨앞 과 맨끝의 "을  slice 메서드를 이용해서 제거해줌 
-          
-          */}
-          {nickname.slice(1, -1)}
+          {/* nickname의  맨앞 과 맨끝의 "을  slice 메서드를 이용해서 제거해줌  */}
+          {userNickName}
           <br />
           <StLetterFormTextArea
             type="text"
             name="content"
             value={content}
             onChange={onChangeContent}
-            placeholder="내용"
+            placeholder="100글자를 입력해주세요"
+            maxLength={100}
+            disabled={content.length === 100}
             required
           />
           <br />
