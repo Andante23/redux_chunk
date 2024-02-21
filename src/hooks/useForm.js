@@ -53,8 +53,6 @@ function useForm() {
       avatar,
     };
 
-    axios.post("http://localhost:5000/letters", inputDataInfo);
-
     // 만약 nickname ,content가 공백으로 입력받으면
     // trim을 통해 < 스페이스 4번 > 상태도.....입력 x
     if (nickname.trim() === "" && content.trim() === "") {

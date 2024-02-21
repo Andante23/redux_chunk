@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { __editProfile } from "redux/modules/authSlice";
 
 function Profile() {
   const { avatar, nickname, userId } = useSelector((state) => state.letter);
 
   return (
     <>
+      {/*  현재 이용자의 프로필 정보만 나타낸 것임  */}
       {
         <div>
           <StProfileImg src={avatar} alt="" /> <br />

@@ -8,6 +8,7 @@ const initialState = {
 };
 
 const getLetterFromServer = async () => {
+  // axios로 부터 받은 데이터는  객체 , 비구조화 문법으로  뽑기
   const { data } = await axios.get("http://localhost:5000/letters");
   console.log(data);
   return data;
@@ -15,7 +16,7 @@ const getLetterFromServer = async () => {
 
 //  __getZanNaBiLetter
 export const __getZanNaBiLetter = createAsyncThunk(
-  "getLetter",
+  "getZanNaBiLetter",
   async (payload, thunkAPI) => {
     try {
       const letters = await getLetterFromServer();
@@ -29,7 +30,7 @@ export const __getZanNaBiLetter = createAsyncThunk(
 
 // __addZanNaBiLetter
 export const __addZanNaBiLetter = createAsyncThunk(
-  "addLetter",
+  "addZanNaBiLetter",
   async (payload, thunkAPI) => {
     try {
       await axios.post("http://localhost:5000/letters", payload);
@@ -43,11 +44,11 @@ export const __addZanNaBiLetter = createAsyncThunk(
 
 // updateZanNaBiLetter
 export const __updateZanNaBiLetter = createAsyncThunk(
-  "updateLetter",
-  async ({ id, editingText }, thunkAPI) => {
+  "updateZanNaBiLetter",
+  async ({ id, editedContent }, thunkAPI) => {
     try {
       await axios.patch(`http://localhost:5000/letters/${id}`, {
-        content: editingText,
+        content: editedContent,
       });
       const letters = await getLetterFromServer();
       return letters;
@@ -58,7 +59,7 @@ export const __updateZanNaBiLetter = createAsyncThunk(
 );
 
 export const __deleteZanNaBiLetter = createAsyncThunk(
-  "deleteLetter",
+  "deleteZanNaBiLetter",
   async (id, thunkAPI) => {
     try {
       await axios.delete(`http://localhost:5000/letters/${id}`);
@@ -74,36 +75,63 @@ const ZaNaBiSlice = createSlice({
   name: "zanabiLetter",
   initialState,
   reducers: {},
-  extraReducers: {
-    // addZanNaBiLetter
+  extraReducers: (builder) => {
+    // __addZanNaBiLetter
+    builder
+      .addCase(__addZanNaBiLetter.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(__addZanNaBiLetter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.letters = action.payload;
+        state.error = null;
+      })
+      .addCase(__addZanNaBiLetter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
-    [__addZanNaBiLetter.pending]: (state, action) => {
-      state.isLoading = true;
-    },
+      // __getZanNaBiLetter
+      .addCase(__getZanNaBiLetter.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(__getZanNaBiLetter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.letters = action.payload;
+        state.error = null;
+      })
+      .addCase(__getZanNaBiLetter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
-    [__addZanNaBiLetter.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.letters = action.payload;
-      state.error = null;
-    },
+      // __deleteZanNaBiLetter
+      .addCase(__deleteZanNaBiLetter.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(__deleteZanNaBiLetter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.letters = action.payload;
+        state.error = null;
+      })
+      .addCase(__deleteZanNaBiLetter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
-    [__addZanNaBiLetter.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    // getZanNaBiLetter
-    [__getZanNaBiLetter.pending]: (state, action) => {
-      state.isLoading = true;
-    },
-    [__getZanNaBiLetter.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.letters = action.payload;
-      state.error = null;
-    },
-    [__getZanNaBiLetter.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+      // __UpdateZanNaBiLetter
+      .addCase(__updateZanNaBiLetter.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(__updateZanNaBiLetter.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.letters = action.payload;
+        state.error = null;
+      })
+      .addCase(__updateZanNaBiLetter.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

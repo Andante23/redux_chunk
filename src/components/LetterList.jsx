@@ -18,69 +18,66 @@ const LetterList = () => {
   const handleArtistPostViewClick = (selectValue) =>
     setButtonValue(selectValue);
 
+  const goToDetail = (id) => navigate(`/detail/${id}`);
+
   useEffect(() => {
     dispatch(__getZanNaBiLetter());
   }, []);
 
-  const data = useSelector((state) => state.znabi.letters);
-  console.log(data);
+  const letterData = useSelector((state) => state.znabi.letters);
+
+  const { userId } = localStorage.getItem("userId");
 
   return (
     <>
-      <StPostView>
-        <StPostViewButton onClick={() => handleArtistPostViewClick("최정훈")}>
+      <div>
+        <button onClick={() => handleArtistPostViewClick("최정훈")}>
           최정훈
-        </StPostViewButton>
-        <StPostViewButton onClick={() => handleArtistPostViewClick("김도형")}>
+        </button>
+        <button onClick={() => handleArtistPostViewClick("김도형")}>
           김도형
-        </StPostViewButton>
-      </StPostView>
-      {/* 아티스트에 해당하는 게시물이 존재하지 않을 때 */}
+        </button>
+      </div>
 
-      {data.map((data) => (
-        <div key={data.id}>
-          <h1> {data.nickname}</h1>
-          <p>{data.content}</p>
-          <button
-            onClick={() => {
-              navigate(`/detail/${data.id}`);
-            }}
-          >
-            add
-          </button>
+      {/* 아티스트에 해당하는 데이터가 없다면  */}
+      {!letterData.filter((letter) => letter.writedTo === buttonValue)
+        .length && (
+        <div>
+          <p>
+            <b>{buttonValue}</b>에 해당하는 데이터가 없습니다.
+          </p>
         </div>
-      ))}
+      )}
+
+      {/* 아티스트에 해당하는 데이터가 있다면 */}
+      {letterData
+        .filter((data) => data.writedTo === buttonValue)
+        .map((data) => (
+          <div key={data.id}>
+            <img
+              src={data.avatar}
+              alt="대체이미지"
+              style={{ borderRadius: "50%", width: "100px", height: "100px" }}
+            />
+            <article>
+              <b>{data.nickname}</b>
+              <p>{data.content}</p>
+            </article>
+
+            <button
+              onClick={() => {
+                goToDetail(data.id);
+              }}
+            >
+              더 보기
+            </button>
+          </div>
+        ))}
     </>
   );
 };
 
 export default LetterList;
-
-const StFilTerCardBorder = styled.div`
-  background-color: black;
-  border-radius: 5px;
-  color: white;
-  margin: 10px;
-`;
-
-const StFilTerCardItem = styled.figure`
-  display: flex;
-  padding: 10px;
-  align-items: center;
-`;
-
-const StFilTerCardItemHeroImage = styled.img`
-  margin-left: 10px;
-  margin-right: 12px;
-  border-radius: 10px;
-  width: 100px;
-`;
-
-const StToThePage = styled.p`
-  cursor: pointer;
-  color: #fbf7f7;
-  padding-left: 1000px;
-`;
 
 const StPostView = styled.div`
   margin: auto;

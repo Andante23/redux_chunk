@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   __deleteZanNaBiLetter,
+  __getZanNaBiLetter,
   __updateZanNaBiLetter,
 } from "store/modules/znbFanSlice";
 import { GlobalStyle } from "Style/GlobalStyle";
@@ -21,9 +22,9 @@ const DetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState();
+  const [editedContent, setEditedContent] = useState("");
   const { letters } = useSelector((state) => state.znabi);
-  console.log(letters);
+
   const dispatch = useDispatch();
 
   /*
@@ -35,9 +36,10 @@ const DetailPage = () => {
   const handleSave = () => {
     const isUpdate = window.confirm("수정하시겠습니까?");
 
-    if (isUpdate === true) {
+    if (isUpdate) {
       dispatch(__updateZanNaBiLetter({ id, editedContent }));
       setIsEditing(false);
+      setEditedContent("");
       alert("수정되었습니다.");
       navigate("/");
     } else {
@@ -45,6 +47,10 @@ const DetailPage = () => {
       setIsEditing(true);
     }
   };
+
+  useEffect(() => {
+    dispatch(__getZanNaBiLetter());
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     // 삭제 validation 체크
@@ -66,6 +72,12 @@ const DetailPage = () => {
     setIsEditing(false);
   };
 
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    dispatch(__getZanNaBiLetter());
+  }, [dispatch]);
+
   return (
     <>
       <GlobalStyle />
@@ -79,15 +91,14 @@ const DetailPage = () => {
 
                 <b>{letter.createdAt}</b>
                 <p>{letter.nickname}</p>
+
                 {isEditing ? (
                   <StLetterText
-                    value={editedContent}
+                    defaultValue={letter.content}
                     onChange={(e) => {
                       setEditedContent(e.target.value);
                     }}
-                  >
-                    {letter.content}
-                  </StLetterText>
+                  />
                 ) : (
                   <p>{letter.content}</p>
                 )}
@@ -108,10 +119,14 @@ const DetailPage = () => {
                         onClick={() => {
                           handleDelete(letter.id);
                         }}
+                        disabled={!letter.userId === userId}
                       >
                         삭제하기
                       </StLetterCardDelete>
-                      <StLetterCardUpdate onClick={handleEdit}>
+                      <StLetterCardUpdate
+                        onClick={handleEdit}
+                        disabled={!letter.userId === userId}
+                      >
                         수정하기
                       </StLetterCardUpdate>
                     </>
