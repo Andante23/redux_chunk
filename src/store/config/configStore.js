@@ -2,7 +2,7 @@ import znbFanLetter from "store/modules/znbFanSlice";
 
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "store/modules/authSlice";
-import letterSlice from "store/modules/letterSlice";
+import letterSlice from "store/modules/userSlice";
 
 export const store = configureStore({
   reducer: {

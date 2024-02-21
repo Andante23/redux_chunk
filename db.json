@@ -1,3 +1,13 @@
 {
-  "letters": []
+  "letters": [
+    {
+      "id": "20c4ee0e-759d-4b4a-a2e2-3107958ea42d",
+      "createdAt": "2024년 2월 21일 수요일",
+      "nickname": "test",
+      "content": "sdfdfsfsdfsdfdsfsdfsdfsdfsdffdsdfsdfsfdsdfs",
+      "avatar": "https://react-jwt-avatar.s3.ap-northeast-2.amazonaws.com/24-02-21/588b4b62-70f2-41b8-8abb-d4a648e4960b.jpg",
+      "userId": "test",
+      "writedTo": "최정훈"
+    }
+  ]
 }

@@ -2,32 +2,44 @@ import React from "react";
 import styled from "styled-components";
 import { logout } from "../store/modules/authSlice.js";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /* LetterHeader : 편지페이지 상단...*/
 export const LetterHeader = () => {
   const dispatch = useDispatch();
+
+  const navi = useNavigate();
 
   return (
     <>
       <StLetterHeader>
         <StLetterHTag>잔나비 Letter</StLetterHTag>
 
-        {/*  
-           logout이 dispatch를 통해 리듀서에 전달되면  상태값이 false가 됩니다. 
-           동시에 로그인페이지로 이동합니다. 
-           
-      */}
-        <StLetterPTag
-          onClick={() => {
-            dispatch(logout());
-          }}
-        >
-          로그아웃
-        </StLetterPTag>
+        <StNavBar>
+          {" "}
+          <StLetterPTag
+            onClick={() => {
+              navi(`/profile`);
+            }}
+          >
+            프로필
+          </StLetterPTag>
+          <StLetterPTag
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            로그아웃
+          </StLetterPTag>
+        </StNavBar>
       </StLetterHeader>
     </>
   );
 };
+
+const StNavBar = styled.nav`
+  display: flex;
+`;
 
 const StLetterHeader = styled.header`
   display: flex;
@@ -43,5 +55,5 @@ const StLetterHTag = styled.h1`
 `;
 
 const StLetterPTag = styled.p`
-  padding-right: 5px;
+  padding: 5px;
 `;

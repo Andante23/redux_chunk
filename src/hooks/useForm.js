@@ -2,16 +2,19 @@ import { addZanNaBiLetter } from "store/modules/znbFanSlice";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 function useForm() {
-  const userNickName = useSelector((state) => state.letter.nickname);
-
+  const select = useSelector((state) => state);
+  console.log(select);
+  const { avatar, userId, nickname } = useSelector((state) => state.letter);
+  // console.log(avatar, userId, nickname);
   /*
     nickname , content : 입력값 저장 
     selectValue : selectBox의 option  값 저장
     dispatch : 중앙 저장소 store에 데이터 저장할때 쓰려고
   */
-  const [nickname, setNickName] = useState(userNickName);
+
   const [content, setContent] = useState("");
   const [selectValue, setSelectValue] = useState("최정훈");
   const dispatch = useDispatch();
@@ -45,18 +48,20 @@ function useForm() {
       createdAt: new Date().toLocaleDateString("ko-kr", option),
       nickname,
       content,
-      avatar:
-        "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/36.jpg",
+      avatar,
+      userId,
       writedTo: selectValue,
-
       id: uuidv4(),
+      avatar,
     };
+
+    axios.post("http://localhost:5000/letters", inputDataInfo);
 
     // 만약 nickname ,content가 공백으로 입력받으면
     // trim을 통해 < 스페이스 4번 > 상태도.....입력 x
     if (nickname.trim() === "" && content.trim() === "") {
       alert("입력란을 모두 입력해주세요");
-      setNickName("");
+
       setContent("");
       //   입력 못받게 하기
       return;
@@ -66,18 +71,18 @@ function useForm() {
     const isAdd = window.confirm("레터를 추가하겠습니까?");
     if (isAdd === true) {
       dispatch(addZanNaBiLetter(inputDataInfo));
-      setNickName("");
+
       setContent("");
     } else {
       alert("취소하였습니다");
-      setNickName("");
+
       setContent("");
       return;
     }
   };
 
   return {
-    userNickName,
+    nickname,
     content,
     selectValue,
     onChangeContent,

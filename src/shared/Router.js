@@ -16,7 +16,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         {/* 로그인이 된 상태라면 */}
-        {isAuthenticated === true ? (
+        {isAuthenticated ? (
           // 로그인 상태라면
           <>
             <Route path="/profile" element={<Profile />} />

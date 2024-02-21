@@ -6,7 +6,7 @@ import styled from "styled-components";
 export function LetterInputForm() {
   //  form 에 의존하는 입력 , 셀렉트박스 코드줄이 길어서  useForm인  커스텀 혹 이용
   const {
-    userNickName,
+    nickname,
     content,
     selectValue,
     onChangeContent,
@@ -19,7 +19,7 @@ export function LetterInputForm() {
       <StLetterForm>
         <StLetterInputDisplay>
           {/* nickname의  맨앞 과 맨끝의 "을  slice 메서드를 이용해서 제거해줌  */}
-          {userNickName}
+          <b>{nickname}</b>
           <br />
           <StLetterFormTextArea
             type="text"
@@ -28,7 +28,6 @@ export function LetterInputForm() {
             onChange={onChangeContent}
             placeholder="100글자를 입력해주세요"
             maxLength={100}
-            disabled={content.length === 100}
             required
           />
           <br />

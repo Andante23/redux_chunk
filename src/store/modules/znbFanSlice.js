@@ -1,5 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import letterData from "assets/fakedata.json";
+import axios from "axios";
+
+const fetchLetterData = async () => {
+  const { data } = await axios.get("http://localhost:5000/letters");
+
+  return data;
+};
+
+console.log(fetchLetterData());
 
 // 리듀서 함수에 들어가는 초기값
 const initialState = letterData;
