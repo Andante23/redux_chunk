@@ -1,21 +1,29 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import {
+  __addZanNaBiLetter,
+  __getZanNaBiLetter,
+} from "store/modules/znbFanSlice";
+
 import styled from "styled-components";
 
-/* LetterList : 선택한 아티스트에 따라 리스트를 보여주는 컴포넌트  */
 const LetterList = () => {
-  /*
-    buttonValue : 아티스트별 게시물보여줄때 버튼 값
-    navigate : 페이지 이동
-    allZnbData : 잔나비 팬레터 데이터
-    onClickArtistViewPostButton : 선택한 아티스트에따라 게시글이 보여지게 하는 함수 
-   */
-  const [buttonValue, setButtonValue] = useState("최정훈");
   const navigate = useNavigate();
-  const { znabi } = useSelector((state) => state);
+
+  const [buttonValue, setButtonValue] = useState("최정훈");
+  const dispatch = useDispatch();
+
   const handleArtistPostViewClick = (selectValue) =>
     setButtonValue(selectValue);
+
+  useEffect(() => {
+    dispatch(__getZanNaBiLetter());
+  }, []);
+
+  const data = useSelector((state) => state.znabi.letters);
+  console.log(data);
 
   return (
     <>
@@ -27,49 +35,21 @@ const LetterList = () => {
           김도형
         </StPostViewButton>
       </StPostView>
+      {/* 아티스트에 해당하는 게시물이 존재하지 않을 때 */}
 
-      {/* 
-          1. 모든 잔나비 팬 레터데이터에서 내가 선택한 버튼값에 따른  새 배열 생성
-          2. map을 통해서 반복문 돌리기!!!!!
-     */}
-
-      {znabi.filter((ld) => ld.writedTo === buttonValue).length !== 0 ? (
-        <div>
-          {znabi
-            .filter((ld) => ld.writedTo === buttonValue)
-            .map((ld) => {
-              return (
-                <StFilTerCardBorder>
-                  <StFilTerCardItem>
-                    <StFilTerCardItemHeroImage
-                      src={ld.avatar}
-                      alt="대체 이미지"
-                    />
-
-                    <p>
-                      <p>{ld.nickname}</p>
-                      <p>{ld.content.slice(0, 50) + "..."}</p>
-
-                      <StToThePage
-                        onClick={() => {
-                          navigate(`/detail/${ld.id}`);
-                        }}
-                      >
-                        더 보기
-                      </StToThePage>
-                    </p>
-                  </StFilTerCardItem>
-                </StFilTerCardBorder>
-              );
-            })}
+      {data.map((data) => (
+        <div key={data.id}>
+          <h1> {data.nickname}</h1>
+          <p>{data.content}</p>
+          <button
+            onClick={() => {
+              navigate(`/detail/${data.id}`);
+            }}
+          >
+            add
+          </button>
         </div>
-      ) : (
-        <>
-          <StNodataPage>
-            <StNoDataWho>{buttonValue}</StNoDataWho>에 해당하는 값이 없습니다.
-          </StNodataPage>
-        </>
-      )}
+      ))}
     </>
   );
 };

@@ -34,6 +34,7 @@ function Login() {
         joinData
       );
 
+      console.log(res);
       setIsLogin(!isLogin);
     } catch (error) {
       alert(error.response.data.message);
@@ -51,9 +52,6 @@ function Login() {
         loginData
       );
 
-      console.log("res", res);
-      console.log("res의data의accessToken", res.data.accessToken);
-
       if (res.data.accessToken) {
         localStorage.setItem("nickname", res.data.nickname);
         localStorage.setItem("userId", res.data.userId);
@@ -66,7 +64,7 @@ function Login() {
 
       navigate("/");
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 

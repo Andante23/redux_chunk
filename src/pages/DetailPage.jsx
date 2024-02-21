@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  deleteZanNaBiLetter,
-  updateZanNaBiLetter,
+  __deleteZanNaBiLetter,
+  __updateZanNaBiLetter,
 } from "store/modules/znbFanSlice";
 import { GlobalStyle } from "Style/GlobalStyle";
 
@@ -22,8 +22,8 @@ const DetailPage = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState();
-  const { znabi } = useSelector((state) => state);
-  console.log(znabi);
+  const { letters } = useSelector((state) => state.znabi);
+  console.log(letters);
   const dispatch = useDispatch();
 
   /*
@@ -36,7 +36,7 @@ const DetailPage = () => {
     const isUpdate = window.confirm("수정하시겠습니까?");
 
     if (isUpdate === true) {
-      dispatch(updateZanNaBiLetter({ id, editedContent }));
+      dispatch(__updateZanNaBiLetter({ id, editedContent }));
       setIsEditing(false);
       alert("수정되었습니다.");
       navigate("/");
@@ -50,7 +50,7 @@ const DetailPage = () => {
     // 삭제 validation 체크
     const isDelete = window.confirm("삭제하시겠습니까?");
     if (isDelete === true) {
-      dispatch(deleteZanNaBiLetter(id));
+      dispatch(__deleteZanNaBiLetter(id));
       navigate("/");
     } else {
       alert("삭제 취소되었습니다");
@@ -69,7 +69,7 @@ const DetailPage = () => {
   return (
     <>
       <GlobalStyle />
-      {znabi
+      {letters
         .filter((letter) => letter.id === id)
         .map((letter) => {
           return (

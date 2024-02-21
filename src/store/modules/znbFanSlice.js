@@ -1,40 +1,110 @@
-import { createSlice } from "@reduxjs/toolkit";
-import letterData from "assets/fakedata.json";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const fetchLetterData = async () => {
-  const { data } = await axios.get("http://localhost:5000/letters");
+const initialState = {
+  letters: [],
+  isLoading: true,
+  error: null,
+};
 
+const getLetterFromServer = async () => {
+  const { data } = await axios.get("http://localhost:5000/letters");
+  console.log(data);
   return data;
 };
 
-console.log(fetchLetterData());
+//  __getZanNaBiLetter
+export const __getZanNaBiLetter = createAsyncThunk(
+  "getLetter",
+  async (payload, thunkAPI) => {
+    try {
+      const letters = await getLetterFromServer();
 
-// 리듀서 함수에 들어가는 초기값
-const initialState = letterData;
+      return letters;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
-// createSlice 칸
+// __addZanNaBiLetter
+export const __addZanNaBiLetter = createAsyncThunk(
+  "addLetter",
+  async (payload, thunkAPI) => {
+    try {
+      await axios.post("http://localhost:5000/letters", payload);
+      const znbFanLetter = await getLetterFromServer();
+      return znbFanLetter;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+// updateZanNaBiLetter
+export const __updateZanNaBiLetter = createAsyncThunk(
+  "updateLetter",
+  async ({ id, editingText }, thunkAPI) => {
+    try {
+      await axios.patch(`http://localhost:5000/letters/${id}`, {
+        content: editingText,
+      });
+      const letters = await getLetterFromServer();
+      return letters;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __deleteZanNaBiLetter = createAsyncThunk(
+  "deleteLetter",
+  async (id, thunkAPI) => {
+    try {
+      await axios.delete(`http://localhost:5000/letters/${id}`);
+      const letters = await getLetterFromServer();
+      return letters;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const ZaNaBiSlice = createSlice({
   name: "zanabiLetter",
   initialState,
-  reducers: {
-    addZanNaBiLetter(state, action) {
-      state.push(action.payload);
-    },
-    deleteZanNaBiLetter(state, action) {
-      return state.filter((letter) => letter.id !== action.payload);
+  reducers: {},
+  extraReducers: {
+    // addZanNaBiLetter
+
+    [__addZanNaBiLetter.pending]: (state, action) => {
+      state.isLoading = true;
     },
 
-    updateZanNaBiLetter(state, action) {
-      return state.map((letter) =>
-        letter.id === action.payload.id
-          ? { ...letter, content: action.payload.editedContent }
-          : letter
-      );
+    [__addZanNaBiLetter.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.letters = action.payload;
+      state.error = null;
+    },
+
+    [__addZanNaBiLetter.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    // getZanNaBiLetter
+    [__getZanNaBiLetter.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [__getZanNaBiLetter.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.letters = action.payload;
+      state.error = null;
+    },
+    [__getZanNaBiLetter.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const { addZanNaBiLetter, deleteZanNaBiLetter, updateZanNaBiLetter } =
-  ZaNaBiSlice.actions;
 export default ZaNaBiSlice.reducer;

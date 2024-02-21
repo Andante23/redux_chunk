@@ -1,12 +1,10 @@
-import { addZanNaBiLetter } from "store/modules/znbFanSlice";
+import { __addZanNaBiLetter } from "store/modules/znbFanSlice";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 function useForm() {
-  const select = useSelector((state) => state);
-  console.log(select);
   const { avatar, userId, nickname } = useSelector((state) => state.letter);
   // console.log(avatar, userId, nickname);
   /*
@@ -70,7 +68,7 @@ function useForm() {
     // 레터를 추가하겠습니까? 라고 사용자에게 물어보는 내용
     const isAdd = window.confirm("레터를 추가하겠습니까?");
     if (isAdd === true) {
-      dispatch(addZanNaBiLetter(inputDataInfo));
+      dispatch(__addZanNaBiLetter(inputDataInfo));
 
       setContent("");
     } else {
